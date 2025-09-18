@@ -1,0 +1,9 @@
+agno
+google-genai
+streamlit
+fastapi
+uvicorn
+requests
+pydantic-settings
+python-dotenv
+firecrawl-py
