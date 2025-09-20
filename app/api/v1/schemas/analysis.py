@@ -1,13 +1,26 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict
 
-class AnalysisRequest(BaseModel):
+class ScrapeRequest(BaseModel):
     symbols: List[str] = Field(
         ...,
-        example=["BOP", "OGDC", "LUCK"],
-        description="A list of 1 to 5 PSX stock symbols to analyze."
+        max_length=5,
+        example=["BOP", "OGDC"],
+        description="A list of up to 5 PSX stock symbols to scrape."
     )
 
-class AnalysisResponse(BaseModel):
+class ScrapeResponse(BaseModel):
+    message: str
+    session_id: str
+    scraped_files: Dict[str, List[str]]
+    # seconds for scraping plus upload to Gemini
+    duration_seconds: Optional[float] = None
+
+class AnalyzeRequest(BaseModel):
+    session_id: str = Field(..., description="The session ID from a successful scraping request.")
+
+class AnalyzeResponse(BaseModel):
     report: Optional[str] = None
     error: Optional[str] = None
+    # seconds for analysis step only
+    duration_seconds: Optional[float] = None
